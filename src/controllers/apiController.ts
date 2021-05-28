@@ -1,5 +1,4 @@
 import express from 'express';
-import jsonwebtoken from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 import configs from '../config/default';

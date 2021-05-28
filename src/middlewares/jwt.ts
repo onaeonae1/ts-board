@@ -34,6 +34,7 @@ export const isAuthenticated_cookie = (
     if (!userData) {
       res.status(400).send('token expired');
     } else {
+      req.user = userData;
       next();
     }
   }

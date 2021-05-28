@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
+import { Schema, Document, model } from 'mongoose';
 
-const userSchema = new mongoose.Schema(
+import UserTypes from '../customTypes/userTypes';
+
+export interface UserTypesModel extends UserTypes, Document {}
+const userSchema: Schema = new mongoose.Schema(
   {
     user_id: {
       type: String,
@@ -27,5 +31,4 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-
-export default mongoose.model('User', userSchema);
+export default model<UserTypesModel>('User', userSchema);
