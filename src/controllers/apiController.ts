@@ -4,16 +4,18 @@ import bcrypt from 'bcrypt';
 import configs from '../config/default';
 import User from '../models/users';
 
-import { signToken, verifyToken } from '../middlewares/jwt';
+import { signToken } from '../middlewares/jwt';
 export const joinController = (req: express.Request, res: express.Response) => {
   const { name, id, password } = req.body;
   res.send({ name });
 };
-
 export const getHome = (req: express.Request, res: express.Response) => {
+  console.log('AaA');
   res.send('HELLO');
 };
-
+export const getJoin = (req: express.Request, res: express.Response) => {
+  res.render('join.html');
+};
 export const postJoin = async (req: express.Request, res: express.Response) => {
   const { user_id, userName, password, password1, email } = req.body;
   //empty 값 팅기기
@@ -57,6 +59,9 @@ export const postJoin = async (req: express.Request, res: express.Response) => {
   });
   // 사용자 생성
 };
+export const getLogin = (req: express.Request, res: express.Response) => {
+  res.render('login.html');
+};
 export const postLogin = async (
   req: express.Request,
   res: express.Response
@@ -70,14 +75,12 @@ export const postLogin = async (
     user_id,
   });
   if (target_user) {
-    console.log(target_user.get('password'));
     const validPassword = await bcrypt.compare(
       password,
       target_user.get('password')
     );
     if (validPassword) {
-      const userName = target_user.get('userName');
-      const token = signToken({ user_id, userName });
+      const token = signToken(target_user.getTokenInfo());
       res.clearCookie('accessToken');
       res.cookie('accessToken', token, { httpOnly: true });
       res.send('loginSuccess');
@@ -92,12 +95,13 @@ export const postModify = async (
   req: express.Request,
   res: express.Response
 ) => {
+  console.log(req.user);
   res.send('postmodify in progress');
 };
 export const getModify = async (
   req: express.Request,
   res: express.Response
 ) => {
-  console.log(`cookies : ${req.cookies}`);
-  res.send('getmodify in progress');
+  console.log(req.user);
+  res.render('modify.html');
 };

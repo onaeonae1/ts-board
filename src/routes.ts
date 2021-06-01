@@ -10,5 +10,8 @@ const routes = {
   BOARD_DETAIL: '/:id',
   BOARD_DELETE: '/:id/delete',
   BOARD_UPDATE: '/:id/update',
+
+  //dummy
+  DUMMY: '/dummy',
 };
 export default routes;

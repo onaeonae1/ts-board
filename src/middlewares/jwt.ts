@@ -1,9 +1,10 @@
 import jsonwebtoken, { JsonWebTokenError } from 'jsonwebtoken';
 import express from 'express';
 
+import UserTypes from '../customTypes/userTypes';
 import configs from '../config/default';
 
-export const signToken = (payload: Object) => {
+export const signToken = (payload: UserTypes) => {
   const jwtSecret = configs.login_options.token_secret;
   const token = jsonwebtoken.sign(payload, jwtSecret, {
     expiresIn: 60 * 10,
@@ -17,7 +18,7 @@ export const verifyToken = (token: string) => {
     return decoded_token;
   } catch (error) {
     console.log(error);
-    return false;
+    return {};
   }
 };
 // jwt-cookie
@@ -34,7 +35,7 @@ export const isAuthenticated_cookie = (
     if (!userData) {
       res.status(400).send('token expired');
     } else {
-      req.user = userData;
+      console.log(`user Data : ${userData}`);
       next();
     }
   }
